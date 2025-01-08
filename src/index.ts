@@ -1,10 +1,11 @@
 import express, {Request,Response} from "express"
 import fs from 'fs';
 import path from 'path';
+import cors from 'cors';
 const app=express()
 const dataFilePath = path.join(__dirname, 'data.json');
 app.use(express.json())
-
+app.use(cors())
 app.post('/addButton',(req:Request,res:Response)=>{
     try {
         const { buttonType, value } = req.body;
