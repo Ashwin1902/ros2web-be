@@ -9,6 +9,6 @@
     "outDir": "./dist",    // Output directory for compiled files
     "rootDir": "./src"     // Root directory for source files
   },
-  "include": ["src/**/*.ts"],  // Include all TypeScript files under src
+  "include": ["src/**/*.ts", "cors.d.ts"],  // Include all TypeScript files under src
   "exclude": ["node_modules"]  // Exclude node_modules folder
 }
