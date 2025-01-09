@@ -47,8 +47,8 @@ router.put('/editGripper', (req: Request, res: Response) => {
 
         const gripperIdx = currObject.buttons.findIndex((gripper:{id:string}) => gripper.id === id);
         if (gripperIdx === -1) return res.status(404).json({ message: 'Gripper does not exist, cannot update' });
-
-        const updatedGripper = { id, name, state, number, wait };
+        const type="Gripper"
+        const updatedGripper = { id, name, state, number, wait,type };
         currObject.buttons[gripperIdx] = updatedGripper;
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
 
