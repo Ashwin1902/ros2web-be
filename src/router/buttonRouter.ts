@@ -5,11 +5,19 @@ import { randomUUID } from "crypto";
 const dataFilePath = path.join(__dirname, '../data.json');
 const router=Router()
 
+interface buttonInterface{
+    id:string,
+    name:string,
+    speed:number,
+    acceleration:number,
+    wait:number,
+}
+
 router.post('/addButton',(req:Request,res:Response)=>{
     try {
         const id=randomUUID();
         const { name,speed,acceleration,wait } = req.body;
-        const newButton = {name,speed,acceleration,wait,id};       
+        const newButton:buttonInterface = {name,speed,acceleration,wait,id};       
         const data = fs.readFileSync(dataFilePath,'utf-8');
         const currObject= JSON.parse(data);
         currObject.buttons.push(newButton)
@@ -31,7 +39,7 @@ router.put('/editButton',(req:Request,res:Response)=>{
         const currObject= JSON.parse(data);
         const newButtonIdx=currObject.buttons.findIndex((btn:{id:string})=>btn.id==id)
         if(newButtonIdx==-1) return res.status(400).json({ message: 'Button does not exist, cannot update'});      
-        const newButton={name,speed,acceleration,wait,id}
+        const newButton:buttonInterface={name,speed,acceleration,wait,id}
         currObject.buttons[newButtonIdx]=newButton
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
         console.log("Button edited",newButton);
@@ -51,7 +59,7 @@ router.get('/removeButton',(req:Request,res:Response)=>{
         if(currObject.buttons.length==0){
             return res.status(400).json({ message: 'No buttons available'});
         }
-        const removedButton=currObject.buttons.pop()
+        const removedButton:buttonInterface=currObject.buttons.pop()
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
         // console.log(currObject);
         console.log(removedButton);
@@ -99,7 +107,7 @@ router.get('/getButtonById/:id',(req:Request,res:Response)=>{
         const data = fs.readFileSync(dataFilePath,'utf-8');
         const currObject= JSON.parse(data);
         const id=req.params.id;
-        const obj=currObject.buttons.find((btn:{id:string})=>btn.id==id);
+        const obj:buttonInterface=currObject.buttons.find((btn:{id:string})=>btn.id==id);
         if(!obj) return res.status(400).json({"msg":"No such button exists"});
         return res.status(200).json({obj});
     } catch (error) {
