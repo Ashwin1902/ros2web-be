@@ -1,0 +1,48 @@
+paths:
+  - name: Warren_Kiehn95
+    speed: 0.5
+    acceleration: 0.5
+    wait: 1
+    id: f0bbed63-3f43-4953-a73f-f141560f04c9
+    type: path
+    plan_space: cartesian
+  - name: Kaela_Batz
+    speed: 0.5
+    acceleration: 0.5
+    wait: 1
+    id: 6cf51aab-c55e-428e-a7c2-0e73bd12ce51
+    type: path
+    plan_space: cartesian
+  - name: Spencer.Wiegand
+    speed: 0.5
+    acceleration: 0.5
+    wait: 1
+    id: 10e68a39-ba8a-4482-b491-6c6300d6d274
+    type: path
+    plan_space: cartesian
+  - name: Alba36
+    speed: 0.5
+    acceleration: 0.5
+    wait: 1
+    id: 9641266d-92a8-4ea6-a395-ae35a7c18fc7
+    type: path
+    plan_space: cartesian
+  - name: Princess.Johns
+    speed: 0.5
+    acceleration: 0.5
+    wait: 1
+    id: b000e1c5-65b9-45d7-a926-0b42fd1ee67d
+    type: path
+    plan_space: cartesian
+  - type: Gripper
+    name: gripper_2_open
+    state: 1
+    number: 2
+    wait: 1
+    id: ae8e58e5-b619-48dd-8ab5-9359a7c3ac95
+  - id: 07d4403d-81ba-4190-8f76-277c498ee869
+    name: gripper_1_close
+    state: 0
+    number: 1
+    wait: 1
+    type: Gripper

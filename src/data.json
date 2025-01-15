@@ -1,28 +1,3 @@
 {
-  "buttons": [
-    {
-      "id": "1b47486b-871b-4c4e-9abb-26a8c2ccd993",
-      "name": "gripper_2_open",
-      "state": 1,
-      "number": 2,
-      "wait": 0,
-      "type": "Gripper"
-    },
-    {
-      "name": "ss",
-      "speed": 0.1,
-      "acceleration": 0.1,
-      "wait": 0,
-      "id": "1eddaffe-b2c0-4a44-bf7c-effdf1ed2dbf",
-      "type": "button"
-    },
-    {
-      "type": "Gripper",
-      "name": "gripper_2_close",
-      "state": 0,
-      "number": 2,
-      "wait": 0,
-      "id": "3695e8a8-11d0-4702-b851-6437c312147a"
-    }
-  ]
+  "buttons": []
 }

@@ -1,18 +1,23 @@
 import { Router, Request, Response } from "express";
 import path from 'path';
 import fs from 'fs';
+import * as yaml from "js-yaml";
 import { randomUUID } from "crypto";
 
-const dataFilePath = path.join(__dirname, '../data.json');
+const dataFilePath = path.join(__dirname, '../data.yaml');
 const router = Router();
 
-// interface gripperInterface {
-//     id: string;
-//     name: string;
-//     state: number;
-//     number: number;
-//     wait: number;
-// }
+interface gripperInterface {
+    id: string;
+    name: string;
+    state: number;
+    number: number;
+    wait: number;
+}
+
+interface Data{
+    paths:gripperInterface[];
+}
 
 router.post('/addGripper', (req: Request, res: Response) => {
     try {
@@ -23,12 +28,13 @@ router.post('/addGripper', (req: Request, res: Response) => {
         // if(state==0) name=name+"close";
         // else name=name+"open"; 
         const newGripper = { type,name, state, number, wait, id };
-        console.log(name);
+        // console.log(name);
         
-        const data = fs.readFileSync(dataFilePath, 'utf-8');
-        const currObject = JSON.parse(data);
-        currObject.buttons.push(newGripper);
-        fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
+        const data = yaml.load(fs.readFileSync(dataFilePath, 'utf-8')) as Data;
+        // console.log(data);
+        
+        data.paths.push(newGripper);
+        fs.writeFileSync(dataFilePath,yaml.dump(data));
 
         return res.status(200).json({ message: 'Gripper added successfully', data: newGripper });
     } catch (error) {
@@ -41,16 +47,15 @@ router.post('/addGripper', (req: Request, res: Response) => {
 router.put('/editGripper', (req: Request, res: Response) => {
     try {
         const { id, state, number, wait } = req.body;
-        const data = fs.readFileSync(dataFilePath, 'utf-8');
-        const currObject = JSON.parse(data);
+        const data = yaml.load(fs.readFileSync(dataFilePath, 'utf-8')) as Data;
         const name=`gripper_${number}_${state==0?"close":"open"}`;
 
-        const gripperIdx = currObject.buttons.findIndex((gripper:{id:string}) => gripper.id === id);
+        const gripperIdx = data.paths.findIndex((gripper:{id:string}) => gripper.id === id);
         if (gripperIdx === -1) return res.status(404).json({ message: 'Gripper does not exist, cannot update' });
         const type="Gripper"
         const updatedGripper = { id, name, state, number, wait,type };
-        currObject.buttons[gripperIdx] = updatedGripper;
-        fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
+        data.paths[gripperIdx] = updatedGripper;
+        fs.writeFileSync(dataFilePath,yaml.dump(data));
 
         return res.status(200).json({ message: 'Gripper updated successfully', data: updatedGripper });
     } catch (error) {

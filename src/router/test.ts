@@ -2,7 +2,7 @@ import { Router,Request,Response } from "express";
 import path from 'path';
 import fs from 'fs';
 import { randomUUID } from "crypto";
-const dataFilePath = path.join(__dirname, '../data.json');
+const dataFilePath = path.join(__dirname, '../test.yaml');
 const router=Router()
 
 // interface buttonInterface{
@@ -11,20 +11,21 @@ const router=Router()
 //     speed:number,
 //     acceleration:number,
 //     wait:number,
+//     plan_space: cartesian | joint
 // }
 
-router.post('/addButton',(req:Request,res:Response)=>{
+router.post('/addPath',(req:Request,res:Response)=>{
     try {
         const id=randomUUID();
-        const { name,speed,acceleration,wait } = req.body;
-        const type="button";
-        const newButton= {name,speed,acceleration,wait,id,type};       
+        const { name,speed,acceleration,wait,plan_space } = req.body;
+        const type="path";
+        const newButton= {name,speed,acceleration,wait,id,type,plan_space};       
         const data = fs.readFileSync(dataFilePath,'utf-8');
         const currObject= JSON.parse(data);
         currObject.buttons.push(newButton)
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
         //console.log(newButton);
-        return res.status(200).json({ message: 'Button added successfully', data: newButton });
+        return res.status(200).json({ message: 'path added successfully', data: newButton });
     } catch (error) {
         return res.status(400).json({"error: ":error});
         
@@ -32,20 +33,20 @@ router.post('/addButton',(req:Request,res:Response)=>{
    
 })
 
-router.put('/editButton',(req:Request,res:Response)=>{
+router.put('/editPath',(req:Request,res:Response)=>{
     try {
         
-        const { name,speed,acceleration,wait,id } = req.body;
+        const { name,speed,acceleration,wait,id,plan_space } = req.body;
         const data = fs.readFileSync(dataFilePath,'utf-8');
         const currObject= JSON.parse(data);
         const newButtonIdx=currObject.buttons.findIndex((btn:{id:string})=>btn.id==id)
-        if(newButtonIdx==-1) return res.status(400).json({ message: 'Button does not exist, cannot update'});      
-        const type="button";
-        const newButton={name,speed,acceleration,wait,id,type}
+        if(newButtonIdx==-1) return res.status(400).json({ message: 'path does not exist, cannot update'});      
+        const type="path";
+        const newButton={name,speed,acceleration,wait,id,type,plan_space}
         currObject.buttons[newButtonIdx]=newButton
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
-        console.log("Button edited",newButton);
-        return res.status(200).json({ message: 'Button added successfully', data: newButton });
+        console.log("path edited",newButton);
+        return res.status(200).json({ message: 'path edited successfully', data: newButton });
     } catch (error) {
         return res.status(400).json({"error: ":error});
         
@@ -53,13 +54,13 @@ router.put('/editButton',(req:Request,res:Response)=>{
    
 })
 
-router.get('/removeButton',(req:Request,res:Response)=>{
+router.get('/removePath',(req:Request,res:Response)=>{
     
     try {
         const data = fs.readFileSync(dataFilePath,'utf-8');
         const currObject= JSON.parse(data);
         if(currObject.buttons.length==0){
-            return res.status(404).json({ message: 'No buttons available'});
+            return res.status(404).json({ message: 'No path available'});
         }
         const removedButton=currObject.buttons.pop()
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
@@ -67,15 +68,14 @@ router.get('/removeButton',(req:Request,res:Response)=>{
         console.log(removedButton);
         
         
-        return res.status(200).json({ message: 'Button removed successfully',removedButton});
+        return res.status(200).json({ message: 'Path removed successfully',removedButton});
     } catch (error) {
-        return res.status(400).json({"error: ":error});
-        
+        return res.status(400).json({"error: ":error});        
     }
    
 })
 
-router.get('/removeAllButtons',(req:Request,res:Response)=>{
+router.get('/removeAllPaths',(req:Request,res:Response)=>{
     
     try {
         const data = fs.readFileSync(dataFilePath,'utf-8');
@@ -83,14 +83,14 @@ router.get('/removeAllButtons',(req:Request,res:Response)=>{
         currObject.buttons=[]
         fs.writeFileSync(dataFilePath, JSON.stringify(currObject, null, 2), 'utf-8');
     //console.log(currObject);
-        return res.status(200).json({ message: 'All Buttons removed successfully'});
+        return res.status(200).json({ message: 'All paths removed successfully'});
     } catch (error) {
         return res.status(400).json({"error: ":error});
     }
     
 })
 
-router.get('/getAllButtons',(req:Request,res:Response)=>{
+router.get('/getAllPaths',(req:Request,res:Response)=>{
     
     try {
         const data = fs.readFileSync(dataFilePath,'utf-8');
