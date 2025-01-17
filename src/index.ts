@@ -1,6 +1,6 @@
 import express, {Request,Response} from "express"
 import pathRouter from './router/pathRouter';
-import gripperRouter from "./router/gripperRoter";
+import gripperRouter from "./router/gripperRouter";
 import testRouter from "./router/test";
 import cors from 'cors';
 
