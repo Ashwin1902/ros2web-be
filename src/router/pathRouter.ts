@@ -24,7 +24,8 @@ router.post('/addPath',(req:Request,res:Response)=>{
         const type="path";
         const newButton= {name,speed,acceleration,wait,id,type,plan_space};
         //console.log(newButton);
-               
+        console.log(newButton);
+        
         const data = yaml.load(fs.readFileSync(dataFilePath,'utf-8')) as Data;
         // const currObject= JSON.parse(data);
         data.paths.push(newButton);
